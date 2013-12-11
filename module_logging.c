@@ -48,7 +48,7 @@ __attribute__((visibility ("hidden"))) char* nameWithTime()
     return logname;
 }
 
-__attribute__((visibility ("hidden"))) void my_event_logger(EVENT event, const char *state, void **func_pointers, const char *arg_strs)
+__attribute__((visibility ("hidden"))) void my_event_logger(EVENT event, const char *state, void **func_pointers, const char *arg_strs, void **raw_args)
 {
     static int Exec_flag = 0;  /* 0 Not Executed  1 Be Executed */
     static FILE *logfile_pointer = NULL;
@@ -121,14 +121,8 @@ __attribute__((visibility ("hidden"))) void my_event_logger(EVENT event, const c
 }
 
 // Initialize event_hander Function
-void my_test(EVENT event, const char *state, void **func_pointers, const char *arg_strs)
-{
-    FILE *filep = NULL;
-    filep = fopen("/sdcard/hello.txt", "w+");
-    fprintf(filep, "%s", log_location);
-}
 __attribute__((visibility ("default"))) int security_module_init(void **event_handle)
 {
-    event_handle[HTMLDocument_createElement] = (void *)(&my_test);
+    event_handle[HTMLDocument_createElement] = (void *)(&my_event_logger);
     return 0;
 }
