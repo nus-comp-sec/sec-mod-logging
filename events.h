@@ -1,5 +1,5 @@
-#ifndef event_enum_h
-#define event_enum_h
+#ifndef events_h
+#define events_h
 
 typedef enum EVENT
 {
@@ -44,11 +44,15 @@ typedef enum EVENT
     Document_setDomain,
     Document_execCommand,
     Document_createAttribute,
+    Document_setWindowAttributeEventListener,
     Node_addEventListener,
+    Node_appendChild,
+    Node_insertBefore,
     Storage_getItem,
     Storage_setItem,
     Storage_removeItem,
-    Storage_clear
+    Storage_clear,
+    v8_ScriptController_evaluate
 }EVENT;
 
 static const char *ArrayEvent[] = 
@@ -94,11 +98,15 @@ static const char *ArrayEvent[] =
     "Document::setDomain",
     "Document::execCommand",
     "Document::createAttribute",
+    "Document::setWindowAttributeEventListener",
     "Node::addEventListener",
+    "Node::appendChild",
+    "Node::insertBefore",
     "Storage::getItem",
     "Storage::setItem",
     "Storage::removeItem",
-    "Storage::clear"
+    "Storage::clear",
+    "v8_ScriptController::evaluate"
 };
 
 #endif
