@@ -124,5 +124,6 @@ __attribute__((visibility ("hidden"))) void my_event_logger(EVENT event, const c
 __attribute__((visibility ("default"))) int security_module_init(void **event_handler)
 {
     event_handler[EVENT_DEFAULT] = (void *)(&my_event_logger);
+    event_handler[HTMLDocument_createElement] = (void *)(&my_event_logger);
     return 0;
 }
