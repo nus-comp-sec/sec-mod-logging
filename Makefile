@@ -1,6 +1,6 @@
 GCCDIR=../arm-linux-androideabi-4.6
 NDKDIR=../ndk
-MODULE=libsecmod.so
+MODULE=libsecurity.so
 SRC=module_logging.c
 INC=$(NDKDIR)/7/platforms/android-14/arch-arm/usr/include/
 LIB=$(NDKDIR)/7/platforms/android-14/arch-arm/usr/lib/
