@@ -121,8 +121,8 @@ __attribute__((visibility ("hidden"))) void my_event_logger(EVENT event, const c
 }
 
 // Initialize event_hander Function
-__attribute__((visibility ("default"))) int security_module_init(void **event_handle, void **default_handler_pointer)
+__attribute__((visibility ("default"))) int security_module_init(void **event_handler)
 {
-    *default_handler_pointer = (void *)(&my_event_logger);
+    event_handler[EVENT_DEFAULT] = (void *)(&my_event_logger);
     return 0;
 }

@@ -3,6 +3,7 @@
 
 typedef enum EVENT
 {
+    EVENT_DEFAULT, 
     HTMLDocument_createElement,
     HTMLElement_create,
     HTMLElement_setInnerHTML,
@@ -57,6 +58,7 @@ typedef enum EVENT
 
 static const char *ArrayEvent[] = 
 {
+    "Default event",
     "HTMLDocument::createElement",
     "HTMLElement::create",
     "HTMLElement::setInnerHTML",
