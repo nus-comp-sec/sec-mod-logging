@@ -55,7 +55,7 @@ typedef enum EVENT
     Storage_setItem,
     Storage_removeItem,
     Storage_clear,
-    v8_ScriptController_evaluate
+    JavaScript_Execute
 }EVENT;
 
 static const char *ArrayEvent[] = 
@@ -110,7 +110,7 @@ static const char *ArrayEvent[] =
     "Storage::setItem",
     "Storage::removeItem",
     "Storage::clear",
-    "v8_ScriptController::evaluate"
+    "JavaScript_Execute"
 };
 
 #endif

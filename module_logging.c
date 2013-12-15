@@ -125,5 +125,6 @@ __attribute__((visibility ("default"))) int security_module_init(void **event_ha
 {
     event_handler[EVENT_DEFAULT] = (void *)(&my_event_logger);
     event_handler[HTMLDocument_createElement] = (void *)(&my_event_logger);
+    event_handler[JavaScript_Execute]= (void *)(&my_event_logger);
     return 0;
 }
