@@ -5,6 +5,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <stdarg.h> /*variadic function*/
 
 // Consts
 #define HL_LOG_TAG "LIB_HOOK"
@@ -33,6 +34,24 @@ __attribute__((visibility ("hidden"))) char *nameWithTime()
     return logname;
 }
 
+//combine strings into one string, first argument is the num of strings, need to free the returned string outside
+__attribute__((visibility ("hidden"))) char *strcmb(unsigned int num, ...)
+{
+	va_list arg_ptr;
+	va_start(arg_ptr, num);
+	unsigned int len = 0;
+	unsigned int i;
+	for (i = 1; i <= num; i++)
+		len += strlen(va_arg(arg_ptr, char *));
+	va_start(arg_ptr, num);
+	char *str = (char *)malloc(len + 1);
+	str[0] = 0;
+	for (i = 1; i <= num; i++)
+		strcat(str, va_arg(arg_ptr, char *));
+	va_end(arg_ptr);
+	return str;
+}
+
 __attribute__((visibility ("hidden"))) char *setfinalStr(int hlStackDepth, EVENT event, const char *state, const char *arg_strs)
 {
 	//prepare strings: level, fclass, name, type, value
@@ -54,37 +73,22 @@ __attribute__((visibility ("hidden"))) char *setfinalStr(int hlStackDepth, EVENT
 	//combined strings into rows
 	char indentSpace[HL_LOG_INDENT + 1] = "";
 	memset(indentSpace, ' ', HL_LOG_INDENT);
-	char *row1 = (char *)malloc(strlen("<log level=\"") + strlen(level) + strlen("\">\n") + 1);
-	sprintf(row1, "%s%s%s", "<log level=\"", level, "\">\n");
+	char *row1 = strcmb(3, "<log level=\"", level, "\">\n");
 	char *row2;
 	if (event != JavaScript_Execute)
-	{
-		row2 = (char *)malloc(strlen(indentSpace) + strlen("<func class=\"") + strlen(fclass) + strlen("\" name=\"") + strlen(name) + strlen("\" type=\"") + strlen(type) + strlen("\">\n") + 1);
-		sprintf(row2, "%s%s%s%s%s%s%s%s", indentSpace, "<func class=\"", fclass, "\" name=\"", name, "\" type=\"", type, "\">\n");
-	}
+		row2 = strcmb(8, indentSpace, "<func class=\"", fclass, "\" name=\"", name, "\" type=\"", type, "\">\n");
 	else
-	{
-		row2 = (char *)malloc(strlen(indentSpace) + strlen("<code name=\"") + strlen(name) + strlen("\" type=\"") + strlen(type) + strlen("\">\n") + 1);
-		sprintf(row2, "%s%s%s%s%s%s", indentSpace, "<code name=\"", name, "\" type=\"", type, "\">\n");
-	}
-	char *row3 = (char *)malloc(strlen(indentSpace) + strlen(indentSpace) + strlen(value) + strlen("\n") + 1);
-	sprintf(row3, "%s%s%s%s", indentSpace, indentSpace, value, "\n");
+		row2 = strcmb(6, indentSpace, "<code name=\"", name, "\" type=\"", type, "\">\n");
+	char *row3 = strcmb(4, indentSpace, indentSpace, value, "\n");
 	char *row4;
 	if (event != JavaScript_Execute)
-	{
-		row4 = (char *)malloc(strlen(indentSpace) + strlen("</func>\n") + 1);
-		sprintf(row4, "%s%s", indentSpace, "</func>\n");
-	}
+		row4 = strcmb(2, indentSpace, "</func>\n");
 	else
-	{
-		row4 = (char *)malloc(strlen(indentSpace) + strlen("</code>\n") + 1);
-		sprintf(row4, "%s%s", indentSpace, "</code>\n");
-	}
+		row4 = strcmb(2, indentSpace, "</code>\n");
 	char row5[8] = "</log>\n";
 
 	//set finalStr
-	char *finalStr = (char *)malloc(strlen(row1) + strlen(row2) + strlen(row3) + strlen(row4) + strlen(row5) + 1);
-    sprintf(finalStr, "%s%s%s%s%s", row1, row2, row3, row4, row5);
+	char *finalStr = strcmb(5, row1, row2, row3, row4, row5);
 
 	//free memory
 	free(row1);
